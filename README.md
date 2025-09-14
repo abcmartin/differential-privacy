@@ -1,230 +1,91 @@
-# Differential Privacy
+# Unterschiedliche Privatsphäre
 
-> **NEW:**
-> [Join our DP community in Slack](https://join.slack.com/t/dp-open-source/shared_invite/zt-35hw483tz-nS5YOtGjxCHk3Ek7WiXvlg)!
+> **NEU:**
 
-This repository contains libraries to generate ε- and (ε, δ)-differentially
-private (DP) statistics over datasets. It contains the following tools:
+> [Treten Sie unserer DP-Community in Slack bei](https://join.slack.com/t/dp-open-source/shared_invite/zt-35hw483tz-nS5YOtGjxCHk3Ek7WiXvlg)!
 
-*   [Privacy on Beam](privacy-on-beam) is an end-to-end differential privacy
-    framework for Go built on top of
-    [Apache Beam](https://beam.apache.org/documentation/). It is intended to be
-    easy to use, even by non-experts.
-*   [PipelineDP4j](pipelinedp4j) is an end-to-end differential privacy framework
-    for JVM languages (Java, Kotlin, Scala). It supports different data
-    processing frameworks such as
-    [Apache Beam](https://beam.apache.org/documentation/) and
-    [Apache Spark](https://spark.apache.org/). It is intended to be easy to use,
-    even by non-experts.
-*   Three "DP building block" libraries, in [C++](cc), [Go](go), and
-    [Java](java). These libraries implement basic noise addition primitives and
-    differentially private aggregations. Privacy on Beam and PipelineDP4j use
-    these libraries.
-*   A [stochastic tester](cc/testing), used to help catch regressions that could
-    make the differential privacy property no longer hold.
-*   A [differential privacy accounting library](python/dp_accounting), used for
-    tracking privacy budget.
-*   A [command line interface](examples/zetasql) for running differentially
-    private SQL queries with [ZetaSQL](https://github.com/google/zetasql).
-*   [DP Auditorium](python/dp_auditorium) is a library for auditing differential
-    privacy guarantees.
+Dieses Repository enthält Bibliotheken, um ε- und (ε, δ)-differenzial zu generieren
 
-In addition to the tools listed above, it is worth mentioning two related
-projects developed by [OpenMined](https://www.openmined.org/) that make use of
-our libraries:
+Private (DP) Statistiken über Datensätze. Es enthält die folgenden Werkzeuge:
 
-*   [PipelineDP](https://pipelinedp.io/) is an end-to-end differential privacy
-    framework for Python. It is the Python version of PipelineDP4j and is a
-    collaboration between Google and OpenMined. Its source code is located in
-    the [OpenMined repository](https://github.com/OpenMined/PipelineDP).
-*   [PyDP](https://github.com/OpenMined/PyDP) is a Python wrapper of our C++ DP
-    building block library.
+* [Privacy on Beam](privacy-on-beam) ist eine End-to-End-differenzierte Privatsphäre
 
-The DP building block libraries, Privacy on Beam, PipelineDP4j and PipelineDP
-are suitable for research, experimental, or production use cases, while the
-other tools are currently experimental and subject to change.
+Framework für Go, das auf
 
-## Getting Started
+[Apache Beam](https://beam.apache.org/documentation/). Es soll sein
 
-If you are new to differential privacy, you might want to go through
-["A friendly, non-technical introduction to differential privacy"](https://desfontain.es/privacy/friendly-intro-to-differential-privacy.html).
-Understanding the basics is helpful, even when using our high-level tools like
-Privacy on Beam and PipelineDP4j. If you plan to use more low-level libraries
-such as DP building block libraries or other experimental tools, you might need
-a more in-depth understanding of differential privacy. You can take a look at
-[a comprehensive guide for programmers by Joseph P. Near and Chiké Abuah](https://programming-dp.com/cover.html)
-or
-[other blog posts at Damien Desfontaines blog](https://desfontain.es/privacy/archives.html).
+Einfach zu bedienen, auch von Nicht-Experten.
 
-### Explore the tools
+* [PipelineDP4j](pipelinedp4j) ist ein differenziertes End-to-End-Datenschutz-Framework
 
-All tools, except the DP Building block libraries, have their documentation in
-their respective directories. For example, Privacy on Beam has README in
-[the privacy-on-beam directory](privacy-on-beam), same for
-[the pipelinedp4j directory](pipelinedp4j).
+Für JVM-Sprachen (Java, Kotlin, Scala). Es unterstützt verschiedene Daten
 
-The high-level documentation for DP Building block libraries follows below
-because they share a lot of commonalities. The language-specific documentation
-can be found in respective directories.
+Verarbeitungsrahmen wie
 
-There is also an ["examples"](examples) directory where you can find examples of
-how to use the tools and libraries. The documentation in the tooling directories
-refers to these examples.
+[Apache Beam](https://beam.apache.org/documentation/) und
 
-### How to Build
+[Apache Spark](https://spark.apache.org/). Es soll einfach zu bedienen sein,
 
-To build the tools and libraries, follow the instructions in their respective
-directories. The build process assumes you have cloned the Git repository. Most
-tools and libraries use [Bazel](https://bazel.build/) as a build system, see
-instructions below to install it.
+Sogar von Nicht-Experten.
 
-#### Bazel
+* Drei "DP-Baustein"-Bibliotheken in [C++(cc), [Go](go) und
 
-To use Bazel, you need to install Bazelisk, a tool that manages Bazel versions
-and installs the correct version of Bazel.
-[Follow the instructions for your platform on the Bazelisk GitHub page](https://github.com/bazelbuild/bazelisk?tab=readme-ov-file#installation).
+[Java](java). Diese Bibliotheken implementieren grundlegende Rauschadditionsprimitive und
 
-## DP Building Block Libraries
+Differenziell private Aggregationen. Datenschutz bei der Nutzung von Beam und PipelineDP4j
 
-This documentation is common to all DP building block libraries. Currently, the
-libraries support the following algorithms:
+Diese Bibliotheken.
 
-Algorithm                        | C++       | Go        | Java
-:------------------------------- | :-------: | :-------: | :-------:
-Laplace mechanism                | Supported | Supported | Supported
-Gaussian mechanism               | Supported | Supported | Supported
-Count                            | Supported | Supported | Supported
-Sum                              | Supported | Supported | Supported
-Mean                             | Supported | Supported | Supported
-Variance                         | Supported | Supported | Supported
-Quantiles                        | Supported | Supported | Supported
-Automatic bounds approximation   | Supported | Planned   | Supported
-Truncated geometric thresholding | Supported | Supported | Supported
-Laplace thresholding             | Supported | Supported | Supported
-Gaussian thresholding            | Supported | Supported | Supported
-Pre-thresholding                 | Supported | Supported | Supported
+* Ein [stochastische Tester](cc/testing), der verwendet wird, um Regressionen zu fangen, die
 
-Implementations of the Laplace mechanism and the Gaussian mechanism use
-[secure noise generation]. These mechanisms can be used to perform computations
-that aren't covered by the algorithms implemented in our libraries.
+Machen Sie die differenzierte Datenschutz-Eigenschaft nicht mehr.
 
-[secure noise generation]: ./common_docs/Secure_Noise_Generation.pdf
+* Eine [differenzielle Datenschutz-Buchhaltungsbibliothek](python/dp_accounting), verwendet für
 
-### Caveats of the DP building block libraries
+Verfolgung des Datenschutzbudgets.
 
-Differential privacy requires some bound on maximum number of contributions each
-user can make to a single aggregation. The DP building block libraries don't
-perform such bounding: their implementation assumes that each user contributes
-only a fixed number of rows to each partition. That number can be configured by
-the user. The library neither verifies nor enforces this limit; it is the
-caller's responsibility to pre-process data to enforce this.
+* Eine [Befehlszeilenschnittstelle](examples/zetasql) für den unterschiedlichen Betrieb
 
-We chose not to implement this step at the DP building block level because it
-requires some *global* operation over the data: group by user, and aggregate or
-subsample the contributions of each user before passing them on to the DP
-building block aggregators. Given scalability constraints, this pre-processing
-must be done by a higher-level part of the infrastructure, typically a
-distributed data processing framework: for example, Privacy on Beam relies on
-Apache Beam for this operation and PipelineDP4j relies on Apache Beam or Apacahe
-Spark. Therefore it is recommended to use the end-to-end tooling if possible:
-Privacy on Beam for Go, PipelineDP4j for Kotlin/Scala/Java and PipelineDP for
-Python.
+Private SQL-Abfragen mit [ZetaSQL](https://github.com/google/zetasql).
 
-For more detail about our approach to building scalable end-to-end differential
-privacy frameworks, we recommend reading:
+* [DP Auditorium](python/dp_auditorium) ist eine Bibliothek für die Prüfung von Differentialen
 
-1.  [Differential privacy computations in data pipelines reference doc](https://github.com/google/differential-privacy/blob/main/common_docs/Differential_Privacy_Computations_In_Data_Pipelines.pdf),
-    which describes how to build such a system using any data pipeline framework
-    (e.g. Apache Beam or Apache Spark).
-2.  Our
-    [paper about differentially private SQL](https://arxiv.org/abs/1909.01917),
-    which describes such a system. Even though the interface of Privacy on Beam
-    and PipelineDP4j is different, it conceptually uses the same framework as
-    the one described in this paper.
+Datenschutzgarantien.
 
-### Known issues
+Zusätzlich zu den oben aufgeführten Tools sind zwei verwandte
 
-Our floating-point implementations are subject to the vulnerabilities described
-in [Casacuberta et al. "Widespread Underestimation of Sensitivity in
-Differentially Private Libraries and How to Fix
-it"](https://arxiv.org/abs/2207.10635) (specifically the rounding, repeated
-rounding, and re-ordering attacks). These vulnerabilities are particularly
-concerning when an attacker can control some of the contents of a dataset and/or
-its order. Our integer implementations are not subject to the vulnerabilities
-described in the paper (though note that Java does not have an integer
-implementation).
+Projekte, die von [OpenMined](https://www.openmined.org/) entwickelt wurden, die
 
-Please refer to our [attack model](common_docs/attack_model.md) to learn more
-about how to use our libraries in a safe way.
+Unsere Bibliotheken:
 
-## Reach out
+* [PipelineDP](https://pipelinedp.io/) ist eine End-to-End-differenzierte Privatsphäre
 
-### Join Our Slack Community
+Framework für Python. Es ist die Python-Version von PipelineDP4j und ist ein
 
-The best way to connect with the Google Differential Privacy team and other DP
-enthusiasts is by joining our Slack community. It's the perfect place to ask
-questions, get support, discuss new features, and stay up-to-date on all things
-related to our open-source DP libraries.
+Zusammenarbeit zwischen Google und OpenMined. Sein Quellcode befindet sich in
 
-Click
-[here](https://join.slack.com/t/dp-open-source/shared_invite/zt-35hw483tz-nS5YOtGjxCHk3Ek7WiXvlg)
-to join!
+Das [OpenMined-Repository](https://github.com/OpenMined/PipelineDP).
 
-Once you're in, check out these key channels:
+* [PyDP](https://github.com/OpenMined/PyDP) ist ein Python-Wrapper unseres C++ DP
 
-*   #introductions: Say hello and tell us a bit about your interest in
-    differential privacy!
-*   #support: Get assistance with our DP libraries, ask questions, and
-    troubleshoot issues.
-*   #development: For contributors and developers to discuss code, pull
-    requests, and the project roadmap.
-*   #general: Official announcements, project news, and broader community
-    updates.
+Bausteinbibliothek.
 
-<br>
-<div align="center">
-<a href="https://join.slack.com/t/dp-open-source/shared_invite/zt-35hw483tz-nS5YOtGjxCHk3Ek7WiXvlg" style="display: inline-block; padding: 10px 20px; font-size: 16px; font-weight: bold; text-align: center; text-decoration: none; color: #fff; background-color: #4A154B; border-radius: 5px;">
-Join Our Slack </a>
-</div>
-<br>
+Die DP-Bausteinbibliotheken, Privacy on Beam, PipelineDP4j und PipelineDP
 
-### Google Group
+Eignen sich für Forschungs-, Versuchs- oder Produktionsfälle, während die
 
-If you don't use Slack, you can join our
-[public discussion group](https://groups.google.com/g/dp-open-source-users).
+Andere Werkzeuge sind derzeit experimentell und können sich ändern.
 
-### Email
+## Erste Schritte
 
-Send us an email at dp-open-source@google.com to discuss your specific use cases
-privately and how we can better assist you.
+Wenn Sie neu in der differenzierten Privatsphäre sind, sollten Sie vielleicht
 
-Please avoid sharing any personally identifiable information. If you need to
-delete a previous message, please contact us.
+["Eine freundliche, nicht-technische Einführung in den differenzierten Datenschutz"](https://desfontain.es/privacy/friendly-intro-to-differential-privacy.html).
 
-## Support
+Es ist hilfreich, die Grundlagen zu verstehen, auch wenn Sie unsere übergeordneten Tools wie
 
-We are actively maintaining and improving the libraries. We welcome
-contributions to this project. For pull requests, please review our
-[contribution guidelines](CONTRIBUTING.md) and consider joining the #development
-channel in
-[our Slack workspace](https://join.slack.com/t/dp-open-source/shared_invite/zt-35hw483tz-nS5YOtGjxCHk3Ek7WiXvlg).
-We will respond to issues filed in this project. If we plan to discontinue
-active maintenance and issue responses, we will provide a notice here at least 3
-months in advance.
+Datenschutz auf Beam und PipelineDP4j. Wenn Sie planen, mehr Low-Level-Bibliotheken zu verwenden
 
-## License
+Wie DP-Bausteinbibliotheken oder andere experimentelle Tools, benötigen Sie möglicherweise
 
-[Apache License 2.0](LICENSE)
-
-## Support Disclaimer
-
-This is not an officially supported Google product.
-
-## Related projects
-
--   [OpenDP](https://opendp.org), a community effort around tools for
-    statistical analysis of sensitive private data.
--   [JAX Privacy](https://github.com/google-deepmind/jax_privacy), a library to
-    train machine learning models with differential privacy.
--   [TensorFlow Privacy](https://github.com/tensorflow/privacy), a TensorFlow
-    library that preceded JAX Privacy.
+Ein tieferes Verständnis der differenzierten Privatsphäre. Sie können einen Blick auf
